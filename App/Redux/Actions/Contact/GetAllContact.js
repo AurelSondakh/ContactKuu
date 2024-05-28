@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { URL_CONTACT } from "../../../Configs/GlobalUrl"
 import * as ActionTypes from '../../Constants/Types'
 

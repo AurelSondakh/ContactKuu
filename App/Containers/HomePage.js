@@ -23,13 +23,10 @@ const HomePage = () => {
         const unsubscribe = navigation.addListener('focus', () => {
           StatusBar.setBackgroundColor('#FFF');
           StatusBar.setBarStyle('dark-content');
+          getAllContact();
         });
         return unsubscribe;
     }, [navigation]);
-
-    useEffect(() => {
-        getAllContact();
-    }, []);
 
     useEffect(() => {
         if (searchValue === "") {
@@ -67,14 +64,16 @@ const HomePage = () => {
                 </View>
             </View>
             {errorModal
-                ? <ErrorModal getAllContact={getAllContact} />
+                ? <ErrorModal method={getAllContact} />
                 : (filteredContactList.length > 0)
-                    ? <FlatList
+                    ? <View style={{ height: height / 1.4 }}>
+                        <FlatList
                             style={styles.contactListContainer}
                             nestedScrollEnabled
                             data={filteredContactList}
                             renderItem={({ item }) => <ContactList item={item} />}
                         />
+                    </View>
                     : <View style={styles.noContactContainer}>
                         <Image source={require('../Assets/Images/NoContactIllust.png')} />
                         <Text style={styles.noContactTitle}>No Contact</Text>
@@ -83,7 +82,7 @@ const HomePage = () => {
             }
             <View style={styles.bottomView}>
                 <View style={styles.addButtonContainer}>
-                    <TouchableOpacity style={styles.addButton}>
+                    <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('AddContactPage')}>
                         <Entypo name="squared-plus" size={29} color="#E97802" />
                     </TouchableOpacity>
                     <Text style={styles.addText}>Add Contact</Text>
@@ -108,6 +107,7 @@ const styles = StyleSheet.create({
     homeContainer: { 
         backgroundColor: '#FFF',
         flex: 1,
+        paddingTop: 20
     },
     searchBarContainer: {
         borderWidth: 1,
@@ -129,14 +129,13 @@ const styles = StyleSheet.create({
     contactListContainer: {
         marginHorizontal: 25,
         marginTop: 25,
-        backgroundColor: '#FFF',
     },
     bottomView: {
         position: 'absolute',
         bottom: 0,
         left: 0,
         right: 0,
-        height: height / 5.5,
+        height: height / 6,
         backgroundColor: '#E97802',
         borderTopLeftRadius: width / 3.5,
         borderTopRightRadius: width / 3.5,

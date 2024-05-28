@@ -4,6 +4,7 @@ import * as actionTypes from '../Constants/Types'
 const initialState = {
     contactList: [],
     contactSpinner: false,
+    addContactSpinner: false,
     errorModal: false
 }
 
@@ -26,6 +27,24 @@ export const ContactReducer = (state = initialState, action) => {
         return {
             ...state,
             contactSpinner: false,
+            errorModal: true
+        };
+    // ============= ADD_CONTACT ===================
+    case actionTypes.ADD_CONTACT_REQUEST:
+        return {
+            ...state,
+            addContactSpinner: true,
+        };
+    case actionTypes.ADD_CONTACT_SUCCESS:
+        return {
+            ...state,
+            addContactSpinner: false,
+            errorModal: false
+        };
+    case actionTypes.ADD_CONTACT_FAILED:
+        return {
+            ...state,
+            addContactSpinner: false,
             errorModal: true
         };
     default:

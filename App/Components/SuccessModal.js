@@ -4,23 +4,23 @@ import { View, Text, Modal, SafeAreaView, TouchableOpacity, Dimensions, StyleShe
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
 
-const ErrorModal = ({method}) => {
+const SuccessModal = ({method, title, desc}) => {
 
-    const [showErrorModal, setShowErrorModal] = useState(true)
+    const [showSuccessModal, setShowSuccessModal] = useState(true)
 
     return (
         <View style={{flex: 1 }}>
-            <Modal animationType='fade' visible={showErrorModal} transparent={true} statusBarTranslucent>
+            <Modal animationType='fade' visible={showSuccessModal} transparent={true} statusBarTranslucent>
                 <SafeAreaView style={styles.modalDim}>
                     <View style={[styles.modalBG]}>
                         <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20, marginHorizontal: 15 }}>
-                            <Image source={require('../Assets/Images/ErrorIllust.png')} />
-                            <Text style={{ textAlign: 'center', fontFamily: 'Poppins-Bold', fontSize: 18, marginBottom: 4, marginTop: 16, color: '#3B3B3B' }}>{'Oops, There was a Server Error :('}</Text>
-                            <Text style={{ fontFamily: 'Poppins-Medium', fontSize: 12, paddingHorizontal: 10, textAlign: 'center' }}>Sorry, there was an error in our system or your connection.{'\n'}Can you try again?</Text>
+                            <Image source={require('../Assets/Images/SuccessIllust.png')} />
+                            <Text style={{ textAlign: 'center', fontFamily: 'Poppins-Bold', fontSize: 18, marginBottom: 4, marginTop: 16, color: '#3B3B3B' }}>{title}</Text>
+                            <Text style={{ fontFamily: 'Poppins-Medium', fontSize: 12, paddingHorizontal: 10, textAlign: 'center' }}>{desc}</Text>
                             <View style={{ justifyContent: 'center', marginTop: 17 }}>
-                                <TouchableOpacity onPress={() => {setShowErrorModal(false); method()}} style={{ backgroundColor: '#E97802', borderRadius: 10, marginLeft: 10,  paddingHorizontal: 96, paddingVertical: 12 }}>
+                                <TouchableOpacity onPress={() => {setShowSuccessModal(false); method()}} style={{ backgroundColor: '#E97802', borderRadius: 10, marginLeft: 10,  paddingHorizontal: 96, paddingVertical: 12 }}>
                                     <Text style={{ fontFamily: 'Poppins-SemiBold', fontSize: 14, color: '#FFF', alignSelf: 'center' }}>
-                                        Try Again!
+                                        Back
                                     </Text>
                                 </TouchableOpacity>
                             </View>
@@ -32,7 +32,7 @@ const ErrorModal = ({method}) => {
     )
 }
 
-export default ErrorModal
+export default SuccessModal
 const styles = StyleSheet.create({
     modalDim: {
         flex: 1,
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
         flex: 1,
         borderRadius: 15,
         marginHorizontal: width / 11,
-        marginVertical: height / 4,
+        marginVertical: height / 3.5,
         backgroundColor: '#FFF',
         overflow: 'hidden'
     },

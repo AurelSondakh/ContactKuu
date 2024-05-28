@@ -4,17 +4,32 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const ContactList = ({ item }) => {
+
+    const ownDevicePattern = "file:///data/user/0/com.contactkuu/";
+
     return (
         <View style={styles.contactContainer}>
             <View style={styles.row}>
                 <View>
-                    {item?.photo !== 'N/A' && item?.photo.startsWith('http://')
-                        ? <Image 
-                            source={{ uri: `${item?.photo}` }} 
-                            style={styles.image}
-                          />
-                        : <FontAwesome name={'user-circle'} color={'#C9DBD5'} size={36} style={styles.icon} />
-                    }
+                    {item?.photo !== 'N/A' ? (
+                        item?.photo.startsWith('http://') ? (
+                            <Image 
+                                source={{ uri: item?.photo }} 
+                                style={styles.image}
+                            />
+                        ) : (
+                            item?.photo.startsWith(ownDevicePattern) ? (
+                                <Image 
+                                    source={{ uri: item?.photo }} 
+                                    style={styles.image}
+                                />
+                            ) : (
+                                <FontAwesome name={'user-circle'} color={'#C9DBD5'} size={36} style={styles.icon} />
+                            )
+                        )
+                    ) : (
+                        <FontAwesome name={'user-circle'} color={'#C9DBD5'} size={36} style={styles.icon} />
+                    )}
                 </View>
                 <View style={styles.textContainer}>
                     <Text style={styles.name}>{item?.firstName} {item?.lastName}</Text>
