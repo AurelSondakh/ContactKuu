@@ -244,7 +244,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         backgroundColor: '#FFF',
         fontFamily: 'Poppins-SemiBold',
-        fontSize: 12
+        fontSize: 12,
+        color: '#000'
     },
     ageContainer: {
         width: '100%',
