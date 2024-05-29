@@ -18,9 +18,16 @@ const ErrorModal = ({method}) => {
                             <Text style={{ textAlign: 'center', fontFamily: 'Poppins-Bold', fontSize: 18, marginBottom: 4, marginTop: 16, color: '#3B3B3B' }}>{'Oops, There was a Server Error :('}</Text>
                             <Text style={{ fontFamily: 'Poppins-Medium', fontSize: 12, paddingHorizontal: 10, textAlign: 'center' }}>Sorry, there was an error in our system or your connection.{'\n'}Can you try again?</Text>
                             <View style={{ justifyContent: 'center', marginTop: 17 }}>
-                                <TouchableOpacity onPress={() => {setShowErrorModal(false); method()}} style={{ backgroundColor: '#E97802', borderRadius: 10, marginLeft: 10,  paddingHorizontal: 96, paddingVertical: 12 }}>
+                                <TouchableOpacity onPress={() => {setShowErrorModal(false); method()}} style={{ backgroundColor: '#E97802', borderRadius: 10, marginLeft: 10,  width: width / 1.5, paddingVertical: 12 }}>
                                     <Text style={{ fontFamily: 'Poppins-SemiBold', fontSize: 14, color: '#FFF', alignSelf: 'center' }}>
                                         Try Again!
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={{ justifyContent: 'center', marginTop: 8 }}>
+                                <TouchableOpacity onPress={() => {setShowErrorModal(false)}} style={{ borderColor: '#FF1212', borderWidth: 1, borderRadius: 10, marginLeft: 10,  width: width / 1.5, paddingVertical: 12 }}>
+                                    <Text style={{ fontFamily: 'Poppins-SemiBold', fontSize: 14, color: '#FF1212', alignSelf: 'center' }}>
+                                        Cancel
                                     </Text>
                                 </TouchableOpacity>
                             </View>
@@ -42,7 +49,7 @@ const styles = StyleSheet.create({
         flex: 1,
         borderRadius: 15,
         marginHorizontal: width / 11,
-        marginVertical: height / 4,
+        marginVertical: height / 4.3,
         backgroundColor: '#FFF',
         overflow: 'hidden'
     },

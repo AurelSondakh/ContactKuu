@@ -1,14 +1,16 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { useNavigation } from "@react-navigation/native";
 
 const ContactList = ({ item }) => {
 
+    const navigation = useNavigation()
     const ownDevicePattern = "file:///data/user/0/com.contactkuu/";
 
     return (
-        <View style={styles.contactContainer}>
+        <TouchableOpacity style={styles.contactContainer} onPress={() => navigation.navigate('ContactDetailPage', {item})}>
             <View style={styles.row}>
                 <View>
                     {item?.photo !== 'N/A' ? (
@@ -39,7 +41,7 @@ const ContactList = ({ item }) => {
                     <FontAwesome5 name={'chevron-right'} size={8} color={'#FFF'} />
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 }
 

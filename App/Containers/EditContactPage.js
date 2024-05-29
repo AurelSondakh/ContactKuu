@@ -14,15 +14,17 @@ import SuccessModal from "../Components/SuccessModal";
 const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
 
-const AddContactPage = () => {
-
+const EditContactPage = (props) => {
+    
+    const item = props?.route?.params?.item
+    console.log(item)
     const navigation = useNavigation();
     const dispatch = useDispatch();
-    const { addContactSpinner, errorModal } = useSelector((state) => state.contact);
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [age, setAge] = useState('');
+    const { editContactSpinner, errorModal } = useSelector((state) => state.contact);
+    const [selectedImage, setSelectedImage] = useState(item?.photo);
+    const [firstName, setFirstName] = useState(item?.firstName);
+    const [lastName, setLastName] = useState(item?.lastName);
+    const [age, setAge] = useState(`${item?.age}`);
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [disableSaveButton, setDisableSaveButton] = useState(true);
     const [saveButtonHitted, setSaveButtonHitted] = useState(false)
@@ -60,8 +62,8 @@ const AddContactPage = () => {
             }
         });
     }
-    
-    const saveContact = async () => {
+
+    const editContact = async () => {
         let data = {
             firstName: firstName,
             lastName: lastName,
@@ -69,13 +71,12 @@ const AddContactPage = () => {
             photo: selectedImage
         }
         console.log(data)
-        console.log(JSON.stringify(data))
         try {
             await dispatch(
-                ActionContact.AddContact(data),
+                ActionContact.EditContact(data, item?.id),
             );
         } catch (error) {
-          console.log('Error Add Contact: ', error);
+          console.log('Error Edit Contact: ', error);
         }
         setSaveButtonHitted(true)
     }
@@ -83,7 +84,7 @@ const AddContactPage = () => {
     return (
         <ScrollView style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.headerText}>Add Contact</Text>
+                <Text style={styles.headerText}>Edit Contact</Text>
             </View>
             <View style={styles.formWrapper}>
                 <View style={styles.formContainer}>
@@ -98,6 +99,7 @@ const AddContactPage = () => {
                                 placeholder="First Name"
                                 placeholderTextColor={'#666666'}
                                 onChangeText={(e) => setFirstName(e)}
+                                value={firstName}
                             />
                         </View>
                         <View>
@@ -106,6 +108,7 @@ const AddContactPage = () => {
                                 placeholder="Last Name"
                                 placeholderTextColor={'#666666'}
                                 onChangeText={(e) => setLastName(e)}
+                                value={lastName}
                             />
                         </View>
                     </View>
@@ -121,6 +124,7 @@ const AddContactPage = () => {
                                 keyboardType="number-pad"
                                 placeholderTextColor={'#666666'}
                                 onChangeText={(e) => setAge(e)}
+                                value={age}
                             />
                         </View>
                     </View>
@@ -148,33 +152,33 @@ const AddContactPage = () => {
             </View>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity disabled={disableSaveButton} style={[styles.saveButton, { backgroundColor: !disableSaveButton ? '#E97802' : '#C3C3C3' }]} onPress={() => setShowConfirmationModal(true)}>
-                    <Text style={styles.saveText}>SAVE CONTACT</Text>
+                    <Text style={styles.saveText}>SAVE CHANGES</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.cancelButton} onPress={() => navigation.navigate('HomePage')}>
-                    <Text style={styles.cancelText}>CANCEL</Text>
+                    <Text style={styles.cancelText}>DISCARD CHANGES</Text>
                 </TouchableOpacity>
             </View>
             {showConfirmationModal
                 ? <ConfirmationModal
-                    image={'add'}
-                    title={'Is the Contact Data Correct?'}
-                    desc={'Make sure before saving your new contact'}
-                    approveButton={`That's right, Save Contact`}
+                    image={'edit'}
+                    title={'Is the Edited Data Appropriate??'}
+                    desc={'Make sure before saving your contacts'}
+                    approveButton={`That's right, Save Changes`}
                     rejectButton={'Try checking again first'}
                     setShowConfirmationModal= {setShowConfirmationModal}
                     showConfirmationModal = {showConfirmationModal}
-                    method = {saveContact}
+                    method = {editContact}
                 />
                 : null
             }
-            {saveButtonHitted && !errorModal && !addContactSpinner
-                ? <SuccessModal method={() => navigation.navigate('HomePage')} title={'Contacts Saved Successfully!'} desc={'You can find your new contact on the homepage'}/>
-                : (saveButtonHitted && errorModal && !addContactSpinner) 
-                    ? <ErrorModal method={() => saveContact()} />
+            {saveButtonHitted && !errorModal && !editContactSpinner
+                ? <SuccessModal method={() => navigation.navigate('HomePage')} title={'Contact Edited Successfully!'} desc={'The contact has successfully changed the data'}/>
+                : (saveButtonHitted && errorModal && !editContactSpinner) 
+                    ? <ErrorModal method={() => editContact()} />
                     : null
             }
             <Spinner
-                visible={addContactSpinner}
+                visible={editContactSpinner}
                 textContent={'Loading...'}
                 textStyle={{ color: '#E97802' }}
             />
@@ -182,7 +186,7 @@ const AddContactPage = () => {
     )
 }
 
-export default AddContactPage
+export default EditContactPage
 
 const styles = StyleSheet.create({
     container: {
