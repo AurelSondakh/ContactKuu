@@ -5,6 +5,7 @@ const initialState = {
     contactList: [],
     contactSpinner: false,
     addContactSpinner: false,
+    editContactSpinner: false,
     errorModal: false
 }
 
@@ -45,6 +46,24 @@ export const ContactReducer = (state = initialState, action) => {
         return {
             ...state,
             addContactSpinner: false,
+            errorModal: true
+        };
+    // ============= EDIT_CONTACT ===================
+    case actionTypes.EDIT_CONTACT_REQUEST:
+        return {
+            ...state,
+            editContactSpinner: true,
+        };
+    case actionTypes.EDIT_CONTACT_SUCCESS:
+        return {
+            ...state,
+            editContactSpinner: false,
+            errorModal: false
+        };
+    case actionTypes.EDIT_CONTACT_FAILED:
+        return {
+            ...state,
+            editContactSpinner: false,
             errorModal: true
         };
     default:

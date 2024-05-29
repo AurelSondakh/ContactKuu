@@ -53,7 +53,7 @@ const ContactDetailPage = (props) => {
             </View>
             <Text style={styles.fullname}>{item?.firstName} {item?.lastName}</Text>
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={[styles.button, {backgroundColor: 'rgba(0, 76, 50, 0.12)'}]}>
+                <TouchableOpacity onPress={() => navigation.navigate('EditContactPage', {item})} style={[styles.button, {backgroundColor: 'rgba(0, 76, 50, 0.12)'}]}>
                     <View style={styles.buttonContent}>
                         <FontAwesome5 name={'pencil-alt'} size={18} color={'#004C32'} />
                         <Text style={styles.buttonText}>Edit Contact</Text>
