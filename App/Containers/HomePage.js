@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { View, Text, StatusBar, StyleSheet, TextInput, Dimensions, FlatList, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StatusBar, StyleSheet, TextInput, Dimensions, FlatList, TouchableOpacity, Image, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Entypo from 'react-native-vector-icons/Entypo'
+import Entypo from 'react-native-vector-icons/Entypo';
 import ContactList from "../Components/ContactList";
 import { ActionContact } from "../Redux/Actions/Contact";
 import ErrorModal from "../Components/ErrorModal";
@@ -21,9 +21,11 @@ const HomePage = () => {
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-          StatusBar.setBackgroundColor('#FFF');
-          StatusBar.setBarStyle('dark-content');
-          getAllContact();
+            if (Platform.OS === 'android') {
+                StatusBar.setBackgroundColor('#FFF');
+            }
+            StatusBar.setBarStyle('dark-content');
+            getAllContact();
         });
         return unsubscribe;
     }, [navigation]);
@@ -46,7 +48,7 @@ const HomePage = () => {
                 ActionContact.GetAllContact(),
             );
         } catch (error) {
-          console.log('Error Get All Contact: ', error);
+            console.log('Error Get All Contact: ', error);
         }
     }
 
@@ -60,6 +62,7 @@ const HomePage = () => {
                         placeholderTextColor={'#666666'}
                         style={styles.searchBarTextInput}
                         onChangeText={(e) => setSearchValue(e)}
+                        testID="search-input"
                     />
                 </View>
             </View>
@@ -72,6 +75,8 @@ const HomePage = () => {
                             nestedScrollEnabled
                             data={filteredContactList}
                             renderItem={({ item }) => <ContactList item={item} />}
+                            keyExtractor={(item) => `${item.id}`}
+                            testID="contact-list"
                         />
                     </View>
                     : <View style={styles.noContactContainer}>
@@ -82,7 +87,7 @@ const HomePage = () => {
             }
             <View style={styles.bottomView}>
                 <View style={styles.addButtonContainer}>
-                    <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('AddContactPage')}>
+                    <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('AddContactPage')} testID="add-contact-button">
                         <Entypo name="squared-plus" size={29} color="#E97802" />
                     </TouchableOpacity>
                     <Text style={styles.addText}>Add Contact</Text>
@@ -96,6 +101,7 @@ const HomePage = () => {
                 visible={contactSpinner}
                 textContent={'Loading...'}
                 textStyle={{ color: '#E97802' }}
+                testID="spinner"
             />
         </View>
     );

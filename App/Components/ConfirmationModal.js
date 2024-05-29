@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { View, Text, Modal, SafeAreaView, TouchableOpacity, Dimensions, StyleSheet, Image } from 'react-native';
-import { useNavigation } from "@react-navigation/native";
 import AddContactIllust from '../Assets/Images/AddContactIllust.png';
 import DeleteContactIllust from '../Assets/Images/DeleteContactIllust.png';
 
@@ -8,8 +7,6 @@ const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
 
 const ConfirmationModal = ({image, title, desc, approveButton, rejectButton, setShowConfirmationModal, showConfirmationModal, method}) => {
-
-    const navigation = useNavigation()
 
     return (
         <View style={{flex: 1 }}>

@@ -38,7 +38,7 @@ const EditContactPage = (props) => {
     }, [navigation]);
 
     useEffect(() => {
-        if(firstName !== '' && lastName !== '' && age !== '' && selectedImage !== null) {
+        if(firstName !== '' && lastName !== '' && age !== '') {
             setDisableSaveButton(false)
         } else setDisableSaveButton (true)
     }, [firstName, lastName, age, selectedImage])
@@ -68,7 +68,7 @@ const EditContactPage = (props) => {
             firstName: firstName,
             lastName: lastName,
             age: Number(age),
-            photo: selectedImage
+            photo: selectedImage ?? 'N/A'
         }
         console.log(data)
         try {
@@ -151,7 +151,7 @@ const EditContactPage = (props) => {
                 </View>
             </View>
             <View style={styles.buttonContainer}>
-                <TouchableOpacity disabled={disableSaveButton} style={[styles.saveButton, { backgroundColor: !disableSaveButton ? '#E97802' : '#C3C3C3' }]} onPress={() => setShowConfirmationModal(true)}>
+                <TouchableOpacity testID="save-contact-button" disabled={disableSaveButton} style={[styles.saveButton, { backgroundColor: !disableSaveButton ? '#E97802' : '#C3C3C3' }]} onPress={() => setShowConfirmationModal(true)}>
                     <Text style={styles.saveText}>SAVE CHANGES</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.cancelButton} onPress={() => navigation.navigate('HomePage')}>
@@ -178,6 +178,7 @@ const EditContactPage = (props) => {
                     : null
             }
             <Spinner
+                testID="spinner"
                 visible={editContactSpinner}
                 textContent={'Loading...'}
                 textStyle={{ color: '#E97802' }}
