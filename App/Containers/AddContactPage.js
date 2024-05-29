@@ -36,7 +36,7 @@ const AddContactPage = () => {
     }, [navigation]);
 
     useEffect(() => {
-        if(firstName !== '' && lastName !== '' && age !== '' && selectedImage !== null) {
+        if(firstName !== '' && lastName !== '' && age !== '') {
             setDisableSaveButton(false)
         } else setDisableSaveButton (true)
     }, [firstName, lastName, age, selectedImage])
@@ -66,7 +66,7 @@ const AddContactPage = () => {
             firstName: firstName,
             lastName: lastName,
             age: Number(age),
-            photo: selectedImage
+            photo: selectedImage ?? 'N/A'
         }
         console.log(data)
         console.log(JSON.stringify(data))
@@ -147,7 +147,7 @@ const AddContactPage = () => {
                 </View>
             </View>
             <View style={styles.buttonContainer}>
-                <TouchableOpacity disabled={disableSaveButton} style={[styles.saveButton, { backgroundColor: !disableSaveButton ? '#E97802' : '#C3C3C3' }]} onPress={() => setShowConfirmationModal(true)}>
+                <TouchableOpacity testID="save-contact-button" disabled={disableSaveButton} style={[styles.saveButton, { backgroundColor: !disableSaveButton ? '#E97802' : '#C3C3C3' }]} onPress={() => setShowConfirmationModal(true)}>
                     <Text style={styles.saveText}>SAVE CONTACT</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.cancelButton} onPress={() => navigation.navigate('HomePage')}>
@@ -174,6 +174,7 @@ const AddContactPage = () => {
                     : null
             }
             <Spinner
+                testID="spinner"
                 visible={addContactSpinner}
                 textContent={'Loading...'}
                 textStyle={{ color: '#E97802' }}

@@ -5,32 +5,29 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from "@react-navigation/native";
 
 const ContactList = ({ item }) => {
-
-    const navigation = useNavigation()
+    const navigation = useNavigation();
     const ownDevicePattern = "file:///data/user/0/com.contactkuu/";
 
     return (
-        <TouchableOpacity style={styles.contactContainer} onPress={() => navigation.navigate('ContactDetailPage', {item})}>
+        <TouchableOpacity
+            style={styles.contactContainer}
+            onPress={() => navigation.navigate('ContactDetailPage', { item })}
+            testID="contact-item"
+        >
             <View style={styles.row}>
                 <View>
                     {item?.photo !== 'N/A' ? (
-                        item?.photo.startsWith('http://') ? (
-                            <Image 
-                                source={{ uri: item?.photo }} 
+                        item?.photo.startsWith('http://') || item?.photo.startsWith(ownDevicePattern) ? (
+                            <Image
+                                source={{ uri: item?.photo }}
                                 style={styles.image}
+                                testID="contact-image"
                             />
                         ) : (
-                            item?.photo.startsWith(ownDevicePattern) ? (
-                                <Image 
-                                    source={{ uri: item?.photo }} 
-                                    style={styles.image}
-                                />
-                            ) : (
-                                <FontAwesome name={'user-circle'} color={'#C9DBD5'} size={36} style={styles.icon} />
-                            )
+                            <FontAwesome name={'user-circle'} color={'#C9DBD5'} size={36} style={styles.icon} testID="FontAwesome" />
                         )
                     ) : (
-                        <FontAwesome name={'user-circle'} color={'#C9DBD5'} size={36} style={styles.icon} />
+                        <FontAwesome name={'user-circle'} color={'#C9DBD5'} size={36} style={styles.icon} testID="FontAwesome" />
                     )}
                 </View>
                 <View style={styles.textContainer}>
@@ -43,7 +40,7 @@ const ContactList = ({ item }) => {
             </View>
         </TouchableOpacity>
     );
-}
+};
 
 const styles = StyleSheet.create({
     contactContainer: {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StatusBar, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { View, Text, StatusBar, StyleSheet, TouchableOpacity, Image, Dimensions, Platform } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from 'react-redux';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -27,7 +27,9 @@ const ContactDetailPage = (props) => {
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-          StatusBar.setBackgroundColor('#D86F02');
+          if (Platform.OS === 'android') {
+            StatusBar.setBackgroundColor('#D86F02');
+            }
           StatusBar.setBarStyle('light-content');
         });
         return unsubscribe;
@@ -48,29 +50,23 @@ const ContactDetailPage = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.headerContainer}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
+                <TouchableOpacity testID="back-button" onPress={() => navigation.goBack()}>
                     <MaterialIcons name={'chevron-left'} size={28} color={'#FFF'} />
                 </TouchableOpacity>
             </View>
-            <View style={styles.imageContainer}>
+            <View>
                 {item?.photo !== 'N/A' ? (
-                    item?.photo.startsWith('http://') ? (
-                        <Image 
-                            source={{ uri: item?.photo }} 
+                    item?.photo.startsWith('http://') || item?.photo.startsWith(ownDevicePattern) ? (
+                        <Image
+                            source={{ uri: item?.photo }}
                             style={styles.image}
+                            testID="contact-image"
                         />
                     ) : (
-                        item?.photo.startsWith(ownDevicePattern) ? (
-                            <Image 
-                                source={{ uri: item?.photo }} 
-                                style={styles.image}
-                            />
-                        ) : (
-                            <FontAwesome name={'user-circle'} color={'#C9DBD5'} size={144} style={styles.icon} />
-                        )
+                        <FontAwesome name={'user-circle'} color={'#C9DBD5'} size={36} style={styles.icon} testID="FontAwesome" />
                     )
                 ) : (
-                    <FontAwesome name={'user-circle'} color={'#C9DBD5'} size={144} style={styles.icon} />
+                    <FontAwesome name={'user-circle'} color={'#C9DBD5'} size={36} style={styles.icon} testID="FontAwesome" />
                 )}
             </View>
             <Text style={styles.fullname}>{item?.firstName} {item?.lastName}</Text>
@@ -130,6 +126,7 @@ const ContactDetailPage = (props) => {
             }
             {console.log(deleteContactSpinner, deleteButtonHitted, errorModal)}
             <Spinner
+                testID="spinner"
                 visible={deleteContactSpinner}
                 textContent={'Loading...'}
                 textStyle={{ color: '#E97802' }}
