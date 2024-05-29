@@ -76,7 +76,7 @@ const EditContactPage = (props) => {
                 ActionContact.EditContact(data, item?.id),
             );
         } catch (error) {
-          console.log('Error Add Contact: ', error);
+          console.log('Error Edit Contact: ', error);
         }
         setSaveButtonHitted(true)
     }

@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StatusBar, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from 'react-redux';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import ConfirmationModal from "../Components/ConfirmationModal";
+import Spinner from 'react-native-loading-spinner-overlay';
+import { ActionContact } from "../Redux/Actions/Contact";
+import ErrorModal from "../Components/ErrorModal";
+import SuccessModal from "../Components/SuccessModal";
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -14,6 +20,10 @@ const ContactDetailPage = (props) => {
     const navigation = useNavigation()
     const ownDevicePattern = "file:///data/user/0/com.contactkuu/";
     const item = props?.route?.params?.item
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+    const dispatch = useDispatch();
+    const { deleteContactSpinner, errorModal } = useSelector((state) => state.contact);
+    const [deleteButtonHitted, setDeleteButtonHitted] = useState(false)
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
@@ -22,6 +32,18 @@ const ContactDetailPage = (props) => {
         });
         return unsubscribe;
     }, [navigation]);
+
+    const deleteContact = async () => {
+        console.log(item?.id)
+        try {
+            await dispatch(
+                ActionContact.DeleteContact(item?.id),
+            );
+        } catch (error) {
+          console.log('Error Delete Contact: ', error);
+        }
+        setDeleteButtonHitted(true)
+    }
 
     return (
         <View style={styles.container}>
@@ -59,7 +81,7 @@ const ContactDetailPage = (props) => {
                         <Text style={styles.buttonText}>Edit Contact</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, {backgroundColor: 'rgba(255, 210, 210, 0.79)'}]}>
+                <TouchableOpacity onPress={() => setShowConfirmationModal(true)} style={[styles.button, {backgroundColor: 'rgba(255, 210, 210, 0.79)'}]}>
                     <View style={styles.buttonContent}>
                         <FontAwesome5 name={'trash-alt'} size={18} color={'#FF1212'} />
                         <Text style={styles.buttonTextDelete}>Delete Contact</Text>
@@ -87,6 +109,31 @@ const ContactDetailPage = (props) => {
                     {"\n"} <Text style={{ fontFamily: 'Poppins-Bold' }}>~ Walter Winchell ~</Text>
                 </Text>
             </View>
+            {showConfirmationModal
+                ? <ConfirmationModal
+                    image={'delete'}
+                    title={'Are you sure you want to delete this contact?'}
+                    desc={'Once deleted, you cannot restore the contact'}
+                    approveButton={`I'm sure, just delete it`}
+                    rejectButton={'Cancel'}
+                    setShowConfirmationModal= {setShowConfirmationModal}
+                    showConfirmationModal = {showConfirmationModal}
+                    method = {deleteContact}
+                />
+                : null
+            }
+            {deleteButtonHitted && !errorModal && !deleteContactSpinner
+                ? <SuccessModal method={() => navigation.navigate('HomePage')} title={'Contacts has been deleted Successfully!'} desc={'You will no longer find your contact in the homepage'}/>
+                : (deleteButtonHitted && errorModal && !deleteContactSpinner) 
+                    ? <ErrorModal method={() => deleteContact()} />
+                    : null
+            }
+            {console.log(deleteContactSpinner, deleteButtonHitted, errorModal)}
+            <Spinner
+                visible={deleteContactSpinner}
+                textContent={'Loading...'}
+                textStyle={{ color: '#E97802' }}
+            />
         </View>
     )
 }

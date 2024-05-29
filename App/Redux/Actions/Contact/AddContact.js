@@ -10,7 +10,7 @@ export const AddContact = (data) => {
         const { signal } = controller;
         const timeoutId = setTimeout(() => {
             controller.abort();
-        }, 7000);
+        }, 10000);
         try {
             console.log(JSON.stringify(data), 'INI DATANYA')
             const response = await fetch(URL_CONTACT, {
