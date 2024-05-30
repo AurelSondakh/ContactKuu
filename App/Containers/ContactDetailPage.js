@@ -54,7 +54,7 @@ const ContactDetailPage = (props) => {
                     <MaterialIcons name={'chevron-left'} size={28} color={'#FFF'} />
                 </TouchableOpacity>
             </View>
-            <View>
+            <View style={styles.imageContainer}>
                 {item?.photo !== 'N/A' ? (
                     item?.photo.startsWith('http://') || item?.photo.startsWith(ownDevicePattern) ? (
                         <Image
@@ -63,10 +63,10 @@ const ContactDetailPage = (props) => {
                             testID="contact-image"
                         />
                     ) : (
-                        <FontAwesome name={'user-circle'} color={'#C9DBD5'} size={36} style={styles.icon} testID="FontAwesome" />
+                        <FontAwesome name={'user-circle'} color={'#C9DBD5'} size={144} style={styles.icon} testID="FontAwesome" />
                     )
                 ) : (
-                    <FontAwesome name={'user-circle'} color={'#C9DBD5'} size={36} style={styles.icon} testID="FontAwesome" />
+                    <FontAwesome name={'user-circle'} color={'#C9DBD5'} size={144} style={styles.icon} testID="FontAwesome" />
                 )}
             </View>
             <Text style={styles.fullname}>{item?.firstName} {item?.lastName}</Text>
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
         color: '#000',
         textAlign: 'center',
         marginTop: 12,
-        marginBottom: 14
+        marginBottom: 4
     },
     buttonContainer: {
         flexDirection: 'row',
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
     },
     button: {
         paddingVertical: 14,
-        paddingHorizontal: 28,
+        paddingHorizontal: 18,
         borderRadius: 11
     },
     buttonContent: {

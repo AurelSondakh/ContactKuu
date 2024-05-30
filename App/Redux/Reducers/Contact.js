@@ -17,6 +17,7 @@ export const ContactReducer = (state = initialState, action) => {
         return {
             ...state,
             contactSpinner: true,
+            errorModal: false
         };
     case actionTypes.GET_ALL_CONTACT_SUCCESS:
         return {
@@ -36,6 +37,7 @@ export const ContactReducer = (state = initialState, action) => {
         return {
             ...state,
             addContactSpinner: true,
+            errorModal: false
         };
     case actionTypes.ADD_CONTACT_SUCCESS:
         return {
@@ -54,6 +56,7 @@ export const ContactReducer = (state = initialState, action) => {
         return {
             ...state,
             editContactSpinner: true,
+            errorModal: false
         };
     case actionTypes.EDIT_CONTACT_SUCCESS:
         return {
@@ -72,6 +75,7 @@ export const ContactReducer = (state = initialState, action) => {
         return {
             ...state,
             deleteContactSpinner: true,
+            errorModal: false
         };
     case actionTypes.DELETE_CONTACT_SUCCESS:
         return {
