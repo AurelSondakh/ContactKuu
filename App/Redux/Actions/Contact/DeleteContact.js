@@ -4,7 +4,7 @@ import * as ActionTypes from '../../Constants/Types';
 export const DeleteContact = (contactId) => {
     return async (dispatch) => {
         dispatch({
-            type: ActionTypes.ADD_CONTACT_REQUEST
+            type: ActionTypes.DELETE_CONTACT_REQUEST
         });
         const controller = new AbortController();
         const { signal } = controller;

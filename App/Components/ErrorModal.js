@@ -1,32 +1,32 @@
 import React, { useState } from "react";
 import { View, Text, Modal, SafeAreaView, TouchableOpacity, Dimensions, StyleSheet, Image } from 'react-native';
 
-const width = Dimensions.get('screen').width
-const height = Dimensions.get('screen').height
+const width = Dimensions.get('screen').width;
 
 const ErrorModal = ({method}) => {
-
-    const [showErrorModal, setShowErrorModal] = useState(true)
+    const [showErrorModal, setShowErrorModal] = useState(true);
 
     return (
-        <View style={{flex: 1 }}>
+        <View style={{flex: 1}}>
             <Modal animationType='fade' visible={showErrorModal} transparent={true} statusBarTranslucent>
                 <SafeAreaView style={styles.modalDim}>
-                    <View style={[styles.modalBG]}>
-                        <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20, marginHorizontal: 15 }}>
+                    <View style={styles.modalBG}>
+                        <View style={styles.modalContent}>
                             <Image source={require('../Assets/Images/ErrorIllust.png')} />
-                            <Text style={{ textAlign: 'center', fontFamily: 'Poppins-Bold', fontSize: 18, marginBottom: 4, marginTop: 16, color: '#3B3B3B' }}>{'Oops, There was a Server Error :('}</Text>
-                            <Text style={{ fontFamily: 'Poppins-Medium', fontSize: 12, paddingHorizontal: 10, textAlign: 'center' }}>Sorry, there was an error in our system or your connection.{'\n'}Can you try again?</Text>
-                            <View style={{ justifyContent: 'center', marginTop: 17 }}>
-                                <TouchableOpacity onPress={() => {setShowErrorModal(false); method()}} style={{ backgroundColor: '#E97802', borderRadius: 10, marginLeft: 10,  width: width / 1.5, paddingVertical: 12 }}>
-                                    <Text style={{ fontFamily: 'Poppins-SemiBold', fontSize: 14, color: '#FFF', alignSelf: 'center' }}>
+                            <Text style={styles.titleText}>{'Oops, There was a Server Error :('}</Text>
+                            <Text style={styles.descText}>
+                                Sorry, there was an error in our system or your connection.{'\n'}Can you try again?
+                            </Text>
+                            <View style={{justifyContent: 'center', marginTop: 17}}>
+                                <TouchableOpacity onPress={() => {setShowErrorModal(false); method();}} style={styles.approveButton}>
+                                    <Text style={styles.buttonText}>
                                         Try Again!
                                     </Text>
                                 </TouchableOpacity>
                             </View>
-                            <View style={{ justifyContent: 'center', marginTop: 8 }}>
-                                <TouchableOpacity onPress={() => {setShowErrorModal(false)}} style={{ borderColor: '#FF1212', borderWidth: 1, borderRadius: 10, marginLeft: 10,  width: width / 1.5, paddingVertical: 12 }}>
-                                    <Text style={{ fontFamily: 'Poppins-SemiBold', fontSize: 14, color: '#FF1212', alignSelf: 'center' }}>
+                            <View style={{justifyContent: 'center', marginTop: 8}}>
+                                <TouchableOpacity onPress={() => {setShowErrorModal(false);}} style={styles.rejectButton}>
+                                    <Text style={styles.rejectButtonText}>
                                         Cancel
                                     </Text>
                                 </TouchableOpacity>
@@ -36,27 +36,72 @@ const ErrorModal = ({method}) => {
                 </SafeAreaView>
             </Modal>
         </View>
-    )
-}
+    );
+};
 
-export default ErrorModal
+export default ErrorModal;
+
 const styles = StyleSheet.create({
     modalDim: {
         flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     modalBG: {
-        flex: 1,
         borderRadius: 15,
-        marginHorizontal: width / 11,
-        marginVertical: height / 4.3,
         backgroundColor: '#FFF',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        width: width * 0.95,
+        paddingVertical: 20,
+        paddingHorizontal: 15
     },
-    modalTitle: {
-        flexDirection: 'row',
-        marginLeft: 21,
-        marginTop: 21,
-        marginBottom: 14
+    modalContent: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 20,
+        marginHorizontal: 15
     },
-})
+    titleText: {
+        textAlign: 'center',
+        fontFamily: 'Poppins-Bold',
+        fontSize: 18,
+        marginBottom: 4,
+        marginTop: 16,
+        color: '#3B3B3B'
+    },
+    descText: {
+        fontFamily: 'Poppins-Medium',
+        fontSize: 12,
+        paddingHorizontal: 10,
+        textAlign: 'center',
+        color: '#898A8D'
+    },
+    approveButton: {
+        backgroundColor: '#E97802',
+        borderRadius: 10,
+        paddingVertical: 12,
+        width: width / 1.5,
+        marginLeft: 10
+    },
+    buttonText: {
+        fontFamily: 'Poppins-SemiBold',
+        fontSize: 14,
+        color: '#FFF',
+        alignSelf: 'center'
+    },
+    rejectButton: {
+        borderColor: '#FF1212',
+        borderWidth: 1,
+        borderRadius: 10,
+        width: width / 1.5,
+        paddingVertical: 12,
+        marginLeft: 10
+    },
+    rejectButtonText: {
+        fontFamily: 'Poppins-SemiBold',
+        fontSize: 14,
+        color: '#FF1212',
+        alignSelf: 'center'
+    }
+});

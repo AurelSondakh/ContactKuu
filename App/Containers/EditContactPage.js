@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import {launchImageLibrary} from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 import ConfirmationModal from "../Components/ConfirmationModal";
 import Spinner from 'react-native-loading-spinner-overlay';
 import { ActionContact } from "../Redux/Actions/Contact";
@@ -15,7 +15,7 @@ const width = Dimensions.get('screen').width
 const height = Dimensions.get('screen').height
 
 const EditContactPage = (props) => {
-    
+
     const item = props?.route?.params?.item
     console.log(item)
     const navigation = useNavigation();
@@ -27,20 +27,21 @@ const EditContactPage = (props) => {
     const [age, setAge] = useState(`${item?.age}`);
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [disableSaveButton, setDisableSaveButton] = useState(true);
-    const [saveButtonHitted, setSaveButtonHitted] = useState(false)
+    const [saveButtonHitted, setSaveButtonHitted] = useState(false);
+    const ownDevicePattern = "file:///data/user/0/com.contactkuu/";
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-          StatusBar.setBackgroundColor('#DB7102');
-          StatusBar.setBarStyle('light-content');
+            StatusBar.setBackgroundColor('#DB7102');
+            StatusBar.setBarStyle('light-content');
         });
         return unsubscribe;
     }, [navigation]);
 
     useEffect(() => {
-        if(firstName !== '' && lastName !== '' && age !== '') {
+        if (firstName !== '' && lastName !== '' && age !== '') {
             setDisableSaveButton(false)
-        } else setDisableSaveButton (true)
+        } else setDisableSaveButton(true)
     }, [firstName, lastName, age, selectedImage])
 
     const handlePhoto = () => {
@@ -76,114 +77,130 @@ const EditContactPage = (props) => {
                 ActionContact.EditContact(data, item?.id),
             );
         } catch (error) {
-          console.log('Error Edit Contact: ', error);
+            console.log('Error Edit Contact: ', error);
         }
         setSaveButtonHitted(true)
     }
 
     return (
-        <ScrollView style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.headerText}>Edit Contact</Text>
-            </View>
-            <View style={styles.formWrapper}>
-                <View style={styles.formContainer}>
-                    <View style={styles.fullnameContainer}>
-                        <View style={styles.fullnameTitle}>
-                            <AntDesign name={'questioncircle'} color={'#E97802'} size={20} />
-                            <Text style={styles.titleText}>What his/her name?</Text>
-                        </View>
-                        <View>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="First Name"
-                                placeholderTextColor={'#666666'}
-                                onChangeText={(e) => setFirstName(e)}
-                                value={firstName}
-                            />
-                        </View>
-                        <View>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Last Name"
-                                placeholderTextColor={'#666666'}
-                                onChangeText={(e) => setLastName(e)}
-                                value={lastName}
-                            />
-                        </View>
-                    </View>
-                    <View style={styles.ageContainer}>
-                        <View style={styles.ageTitle}>
-                            <AntDesign name={'calendar'} color={'#E97802'} size={20} />
-                            <Text style={styles.titleText}>Please fill out age</Text>
-                        </View>
-                        <View>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Age (number only)"
-                                keyboardType="number-pad"
-                                placeholderTextColor={'#666666'}
-                                onChangeText={(e) => setAge(e)}
-                                value={age}
-                            />
-                        </View>
-                    </View>
-                    <View style={styles.photoContainer}>
-                        <View style={styles.photoTitle}>
-                            <FontAwesome name={'user'} color={'#E97802'} size={22} style={{ marginLeft: 3 }} />
-                            <Text style={styles.titleText}>Add image to this profile</Text>
-                        </View>
-                        {selectedImage ? (
-                            <View style={styles.changePhotoBox}>
-                                <Image source={{ uri: selectedImage }} style={{ width: 105, height: 105, borderRadius: 8 }} />
-                                <TouchableOpacity style={styles.changePhotoButton} onPress={() => handlePhoto()}>
-                                    <FontAwesome name="camera" size={23} color="#C3C3C3" />
-                                    <Text style={styles.photoText}>Change Photo</Text>
-                                </TouchableOpacity>
+        <View style={{ flex: 1 }}>
+            <ScrollView contentContainerStyle={styles.container}>
+                <View style={styles.header}>
+                    <Text style={styles.headerText}>Edit Contact</Text>
+                </View>
+                <View style={styles.formWrapper}>
+                    <View style={styles.formContainer}>
+                        <View style={styles.fullnameContainer}>
+                            <View style={styles.fullnameTitle}>
+                                <AntDesign name={'questioncircle'} color={'#E97802'} size={20} />
+                                <Text style={styles.titleText}>What his/her name?</Text>
                             </View>
-                        ) : (
-                            <TouchableOpacity style={styles.photoBox} onPress={() => handlePhoto()}>
-                                <FontAwesome name="camera" size={23} color="#C3C3C3" />
-                                <Text style={styles.photoText}>Choose Photo from Gallery</Text>
-                            </TouchableOpacity>
-                        )}
+                            <View>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="First Name"
+                                    placeholderTextColor={'#666666'}
+                                    onChangeText={(e) => setFirstName(e)}
+                                    value={firstName}
+                                />
+                            </View>
+                            <View>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="Last Name"
+                                    placeholderTextColor={'#666666'}
+                                    onChangeText={(e) => setLastName(e)}
+                                    value={lastName}
+                                />
+                            </View>
+                        </View>
+                        <View style={styles.ageContainer}>
+                            <View style={styles.ageTitle}>
+                                <AntDesign name={'calendar'} color={'#E97802'} size={20} />
+                                <Text style={styles.titleText}>Please fill out age</Text>
+                            </View>
+                            <View>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="Age (number only)"
+                                    keyboardType="number-pad"
+                                    placeholderTextColor={'#666666'}
+                                    onChangeText={(e) => setAge(e)}
+                                    value={age}
+                                />
+                            </View>
+                        </View>
+                        <View style={styles.photoContainer}>
+                            <View style={styles.photoTitle}>
+                                <FontAwesome name={'user'} color={'#E97802'} size={22} style={{ marginLeft: 3 }} />
+                                <Text style={styles.titleText}>Add image to this profile</Text>
+                            </View>
+                            {selectedImage ? (
+                                <View style={styles.changePhotoBox}>
+                                    <View style={styles.imageContainer}>
+                                        {selectedImage !== 'N/A' ? (
+                                            selectedImage.startsWith('http://') || selectedImage.startsWith(ownDevicePattern) ? (
+                                                <Image
+                                                    source={{ uri: selectedImage }}
+                                                    style={{ width: 105, height: 105, borderRadius: 8 }}
+                                                    testID="contact-image"
+                                                />
+                                            ) : (
+                                                <FontAwesome name={'user-circle'} color={'#C9DBD5'} size={105} style={{ width: 105, height: 105, borderRadius: 8 }} testID="FontAwesome" />
+                                            )
+                                        ) : (
+                                            <FontAwesome name={'user-circle'} color={'#C9DBD5'} size={105} style={{ width: 105, height: 105, borderRadius: 8 }} testID="FontAwesome" />
+                                        )}
+                                    </View>
+                                    <TouchableOpacity style={styles.changePhotoButton} onPress={() => handlePhoto()}>
+                                        <FontAwesome name="camera" size={23} color="#C3C3C3" />
+                                        <Text style={styles.photoText}>Change Photo</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            ) : (
+                                <TouchableOpacity style={styles.photoBox} onPress={() => handlePhoto()}>
+                                    <FontAwesome name="camera" size={23} color="#C3C3C3" />
+                                    <Text style={styles.photoText}>Choose Photo from Gallery</Text>
+                                </TouchableOpacity>
+                            )}
+                        </View>
                     </View>
                 </View>
-            </View>
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity testID="save-contact-button" disabled={disableSaveButton} style={[styles.saveButton, { backgroundColor: !disableSaveButton ? '#E97802' : '#C3C3C3' }]} onPress={() => setShowConfirmationModal(true)}>
-                    <Text style={styles.saveText}>SAVE CHANGES</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.cancelButton} onPress={() => navigation.navigate('HomePage')}>
-                    <Text style={styles.cancelText}>DISCARD CHANGES</Text>
-                </TouchableOpacity>
-            </View>
-            {showConfirmationModal
-                ? <ConfirmationModal
-                    image={'edit'}
-                    title={'Is the Edited Data Appropriate??'}
-                    desc={'Make sure before saving your contacts'}
-                    approveButton={`That's right, Save Changes`}
-                    rejectButton={'Try checking again first'}
-                    setShowConfirmationModal= {setShowConfirmationModal}
-                    showConfirmationModal = {showConfirmationModal}
-                    method = {editContact}
-                />
-                : null
-            }
-            {saveButtonHitted && !errorModal && !editContactSpinner
-                ? <SuccessModal method={() => navigation.navigate('HomePage')} title={'Contact Edited Successfully!'} desc={'The contact has successfully changed the data'}/>
-                : (saveButtonHitted && errorModal && !editContactSpinner) 
-                    ? <ErrorModal method={() => editContact()} />
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity testID="save-contact-button" disabled={disableSaveButton} style={[styles.saveButton, { backgroundColor: !disableSaveButton ? '#E97802' : '#C3C3C3' }]} onPress={() => setShowConfirmationModal(true)}>
+                        <Text style={styles.saveText}>SAVE CHANGES</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.cancelButton} onPress={() => navigation.navigate('HomePage')}>
+                        <Text style={styles.cancelText}>DISCARD CHANGES</Text>
+                    </TouchableOpacity>
+                </View>
+                {showConfirmationModal
+                    ? <ConfirmationModal
+                        image={'edit'}
+                        title={'Is the Edited Data Appropriate??'}
+                        desc={'Make sure before saving your contacts'}
+                        approveButton={`That's right, Save Changes`}
+                        rejectButton={'Try checking again first'}
+                        setShowConfirmationModal={setShowConfirmationModal}
+                        showConfirmationModal={showConfirmationModal}
+                        method={editContact}
+                    />
                     : null
-            }
-            <Spinner
-                testID="spinner"
-                visible={editContactSpinner}
-                textContent={'Loading...'}
-                textStyle={{ color: '#E97802' }}
-            />
-        </ScrollView>
+                }
+                {saveButtonHitted && !errorModal && !editContactSpinner
+                    ? <SuccessModal method={() => navigation.navigate('HomePage')} title={'Contact Edited Successfully!'} desc={'The contact has successfully changed the data'} />
+                    : (saveButtonHitted && errorModal && !editContactSpinner)
+                        ? <ErrorModal method={() => editContact()} />
+                        : null
+                }
+                <Spinner
+                    testID="spinner"
+                    visible={editContactSpinner}
+                    textContent={'Loading...'}
+                    textStyle={{ color: '#E97802' }}
+                />
+            </ScrollView>
+        </View>
     )
 }
 
@@ -191,12 +208,13 @@ export default EditContactPage
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#FFF',
+        flexGrow: 1,
+        justifyContent: 'space-between',
+        paddingBottom: 20
     },
     header: {
         backgroundColor: '#DB7102',
-        paddingTop: 24, 
+        paddingTop: 24,
         paddingBottom: 55,
         borderBottomLeftRadius: 20,
         borderBottomRightRadius: 20,
@@ -287,8 +305,8 @@ const styles = StyleSheet.create({
         color: '#C3C3C3',
     },
     buttonContainer: {
-        marginHorizontal: 37,
-        marginTop: height / 6
+        paddingHorizontal: 37,
+        paddingBottom: 20,
     },
     saveButton: {
         backgroundColor: '#E97802',
